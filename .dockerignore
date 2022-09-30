@@ -1,0 +1,12 @@
+.DS_Store
+.dockerignore
+.idea/
+.git/
+.gitignore
+README.rst
+README.md
+*.pyc
+__pycache__
+docker-compose.yml 
+vol/
+deploy/

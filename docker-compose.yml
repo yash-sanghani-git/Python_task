@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  server:
+    container_name: paython_task_backend
+    image: task:latest
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    restart: on-failure
+    volumes:
+      - ./task:/task
+      - static_volume:/task/static
+    ports:
+      - "8001:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
+
+  db:
+    container_name: database
+    image: mysql:8
+    platform: linux/amd64
+    # command: --default-authentication-plugin=mysql_native_password --mysqlx=0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_ALLOW_EMPTY_PASSWORD=True
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
+      timeout: 200000s
+      retries: 10
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql/
+volumes:
+  mysql_data:
+  static_volume:

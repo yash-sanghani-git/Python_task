@@ -12,7 +12,7 @@ class GetSheet(APIView):
     data = pd.read_excel(request.FILES['file'])
     alldata = data.to_json(orient ='records')
     jsonalldata = json.loads(alldata)
-    db = MySQLdb.connect( "db" , "root" , "1234" , "test" )
+    db = MySQLdb.connect( os.environ.get('DB_HOST'), os.environ.get('DB_USER'), os.environ.get('DB_PASSWORD'), os.environ.get('DB_NAME') )
     tblname = str(request.FILES['file']).replace('.xlsx','')
     cols = []
     col=""
@@ -35,11 +35,7 @@ class GetSheet(APIView):
       createtbl = "Create table " + tblname+" (" +','.join(column)+')'
       print(createtbl)
       uid = list(jsonalldata[0].keys())
-      # v = ','.join("_".join(uid.split()))
       uniqueindex = "CREATE UNIQUE INDEX "+ uid[0] +" ON "+ tblname+" ("+col+")"
-      # uniqueindex = "create unique index abc on sampledatasafety(incident_cost)"
-      print("+"*1000)
-      print(uniqueindex)
       insert.execute(createtbl)
       insert.execute(uniqueindex)
       db.commit()

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
+    'python_task'
 ]
 
 MIDDLEWARE = [
@@ -74,25 +75,15 @@ WSGI_APPLICATION = 'task.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql', 
-#         'NAME': 'test',
-#         'USER': 'root',
-#         'PASSWORD': '',
-#         'HOST': 'localhost',  
-#         'PORT': '3306',
-#     }
-# }
 
 DATABASES = {
    'default': {
       'ENGINE': 'django.db.backends.mysql',
-      'NAME': 'test',
-      'USER': 'root',
-      'PASSWORD': '1234',
-      'HOST': 'db',
-      'PORT': '3306',
+      'NAME': os.environ.get('DB_NAME'),
+      'USER': os.environ.get('DB_USER'),
+      'PASSWORD': os.environ.get('DB_PASSWORD'),
+      'HOST': os.environ.get('DB_HOST'),
+      'PORT': os.environ.get('DB_PORT'),
    }
 }
 
